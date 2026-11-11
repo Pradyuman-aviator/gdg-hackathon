@@ -97,6 +97,10 @@ function hq(box) {
 // corner with pizza, two friends saying cheers, a fan with a flag and a
 // keepy-uppy player. Metres in the station's frame, +z the front; the spot
 // in front of the door, where visitors stand, stays clear.
+// Collision only as tall as a person: solid() defaults to the whole station
+// height, which would stand a 7 m invisible column over each group.
+const PERSON = 1.9;
+
 function crowd(box, solid) {
   const person = makePerson(box);
   const P = tint => ({ tex: 'paint', tint }), glow = tint => ({ tex: 'paint', tint, emissive: 1 });
@@ -120,7 +124,7 @@ function crowd(box, solid) {
   // Her friend reaches for one, a can in the other hand.
   const friend = person({ x: -2.3, z: 3.85, yaw: -2.2, skin: SKIN.tan, hair: HAIR.black, frock: TEE.green, ponytail: true, bow: TEE.yellow, arms: [-0.55, -1.15], spread: [0.1, -0.12] });
   prop(box, at(friend, 0, [0, 0.03, 0]), 0.07, 0.13, 0.07, P(TEE.yellow));
-  solid(tx / S, (tz + 0.05) / S, 2.0 / S, 1.6 / S);
+  solid(tx / S, (tz + 0.05) / S, 2.0 / S, 1.6 / S, 0, PERSON / S);
 
   // Cheers: two friends knock their cans together.
   const a = person({ x: 2.4, z: 3.15, yaw: Math.PI / 2, skin: SKIN.wheat, hair: HAIR.black, tee: TEE.red, arms: [-2.1, 0.1], spread: [0.05, -0.08], mouth: 'open' });
@@ -129,7 +133,7 @@ function crowd(box, solid) {
   prop(box, at(b, 1, [0, 0.04, 0]), 0.07, 0.13, 0.07, P(TEE.blue));
   const [cx, cy, cz] = at(a, 0);
   for (const [dx, dy] of [[-0.05, 0.2], [0.06, 0.26], [0.0, 0.32]]) prop(box, [cx + 0.03 + dx, cy + dy, cz], 0.04, 0.04, 0.04, glow(0xffe08a));
-  solid(2.98 / S, 3.15 / S, 1.7 / S, 0.8 / S);
+  solid(2.98 / S, 3.15 / S, 1.7 / S, 0.8 / S, 0, PERSON / S);
 
   // A fan cheers with both arms up and a GDG flag.
   const fan = person({ x: -4.25, z: 0.45, yaw: -0.35, skin: SKIN.wheat, hair: HAIR.black, frock: TEE.yellow, ponytail: true, bow: TEE.blue, arms: [-2.85, -2.85], spread: [-0.35, 0.35], mouth: 'open' });
@@ -137,21 +141,21 @@ function crowd(box, solid) {
   prop(box, [fx, fy + 0.3, fz], 0.03, 0.75, 0.03, P(0xdedede));
   const stripes = [TEE.blue, TEE.red, TEE.yellow, TEE.green];
   stripes.forEach((tint, i) => prop(box, [fx + 0.08 + i * 0.075, fy + 0.55, fz], 0.075, 0.24, 0.02, P(tint), -0.35));
-  solid(-4.25 / S, 0.45 / S, 0.8 / S, 0.7 / S);
+  solid(-4.25 / S, 0.45 / S, 0.8 / S, 0.7 / S, 0, PERSON / S);
 
   // Keepy-uppy: one foot up, the ball in the air.
   const player = person({ x: 4.25, z: 0.25, yaw: 0.35, skin: SKIN.tan, hair: HAIR.brown, tee: TEE.blue, arms: [-0.35, -0.35], spread: [-0.75, 0.75], legs: [-0.95, 0] });
   const [bx, by, bz] = player.place(player.feet[0]);
   prop(box, [bx, by + 0.42, bz], 0.22, 0.22, 0.22, P(0xf4f4f4), 0.4);
   for (const [dx, dy] of [[-0.05, 0.03], [0.06, -0.05]]) prop(box, [bx + dx, by + 0.42 + dy, bz + 0.112], 0.07, 0.07, 0.01, P(0x1d1d24), 0.4);
-  solid(4.25 / S, 0.3 / S, 0.9 / S, 0.9 / S);
+  solid(4.25 / S, 0.3 / S, 0.9 / S, 0.9 / S, 0, PERSON / S);
 
   // A selfie by the balloons: phone held up, screen lit.
   const selfie = person({ x: 4.1, z: -1.55, yaw: 0.6, skin: SKIN.brown, hair: HAIR.black, frock: TEE.red, long: true, bow: TEE.green, arms: [-2.45, 0.1], spread: [0.25, -0.08] });
   const [sx, sy, sz] = at(selfie, 0, [0, 0.06, 0]);
   prop(box, [sx, sy, sz], 0.1, 0.17, 0.02, P(0x1d1d24), 0.6);
   prop(box, [sx + 0.012 * Math.sin(0.6), sy, sz + 0.012 * Math.cos(0.6)], 0.08, 0.14, 0.008, glow(0x9fd3ff), 0.6);
-  solid(4.1 / S, -1.55 / S, 0.7 / S, 0.7 / S);
+  solid(4.1 / S, -1.55 / S, 0.7 / S, 0.7 / S, 0, PERSON / S);
 }
 
 export default {
