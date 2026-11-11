@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { bakeStation } from '../bake.js';
 
 // Enhanced PBR merger with face normals, crystal emerald luster and glowing energy aura
 function mergeSponsorsModel(root) {
@@ -157,7 +158,7 @@ export default {
       const model = gltf.scene;
       model.scale.setScalar(0.55);
       // Y is already UP in this model
-      const optimized = mergeSponsorsModel(model);
+      const optimized = bakeStation(mergeSponsorsModel(model));
       group.add(optimized);
     });
 

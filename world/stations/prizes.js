@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { bakeStation } from '../bake.js';
 
 // Enhanced PBR merger with face normals and premium metallic luster
 function mergePrizesModel(root) {
@@ -149,7 +150,7 @@ export default {
       model.scale.setScalar(0.68);
       // In the GLB, Z is UP. Rotate around X by -90 deg so Z becomes +Y (UP)
       model.rotation.x = -Math.PI / 2;
-      const optimized = mergePrizesModel(model);
+      const optimized = bakeStation(mergePrizesModel(model));
       group.add(optimized);
     });
 
